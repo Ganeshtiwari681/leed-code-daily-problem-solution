@@ -1,0 +1,23 @@
+int minOperations(int* nums, int numsSize){
+    int freq[1000000]={0};
+    int res=0,max=0,min=nums[0];
+    for(register int i=0;i<numsSize;i++)
+    {
+        freq[nums[i]]++;
+        if(max<nums[i])
+        {
+            max=nums[i];
+        }
+        else if(min>nums[i])
+        {
+            min=nums[i];
+        }
+    }
+    for(register int i=min;i<=max;i++)
+    {
+        if(freq[i]==1)
+        return -1;
+        res+=(freq[i]+2)/3;
+    }
+    return res;
+}
