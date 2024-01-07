@@ -1,0 +1,47 @@
+#define size 50
+
+typedef struct
+{
+    char *diffstr;
+    int sum;
+    UT_hash_handle hh;
+}hElem;
+
+int numberOfArithmeticSlices(int* nums, int numsSize)
+{
+    hElem **count=calloc(sizeof(hElem *),numsSize),*t;
+    long long result=0,diff=0;
+    
+    for(int i=1;i<numsSize;i++)
+    {
+        count[i]= NULL;
+        for(int j=0;j<i;j++)
+        {
+            diff=(long long)nums[i]-(long long)nums[j];
+            int sum=0,origin=0;
+
+            char *diffstr=calloc(sizeof(char),size+1);
+            sprintf(diffstr,"%lld",diff);
+            HASH_FIND_STR(count[j],diffstr,t);
+            if(t)
+            {
+                sum=t->sum;
+            }
+
+            HASH_FIND_STR(count[i],diffstr,t);
+            if(t)
+            {
+                t->sum+=sum+1;
+            }
+            else
+            {
+                t=calloc(sizeof(hElem),1);
+                t->diffstr=diffstr;
+                t->sum=sum+1;
+                HASH_ADD_STR(count[i],diffstr,t);
+            }
+            result+=sum;
+        }
+    }
+    return result;
+}
