@@ -1,0 +1,47 @@
+int search(struct TreeNode *root, int *stack, int *count)
+{
+    if(root==NULL)
+    {
+        return -1;
+    }
+
+    int data=0;
+    data += search(root->left, stack, count);
+    data += search(root->right, stack, count);
+
+    if(-2==data)
+    {
+        stack[*count]=root->val;
+        *count += 1;
+    }
+    return 1;
+}
+
+bool leafSimilar(struct TreeNode* root1, struct TreeNode* root2) {
+    int *stack1=(int *)malloc(sizeof(int)*201);
+    int count1=0;
+
+    int *stack2=(int *)malloc(sizeof(int)*201);
+    int count2=0;
+
+    search(root1, stack1, &count1);
+    search(root2, stack2, &count2);
+
+    if(count1!=count2)
+    {
+        return false;
+    }
+
+    else
+    {
+        for(int i=0;i<count1;i++)
+        {
+            if(stack1[i]!=stack2[i])
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
