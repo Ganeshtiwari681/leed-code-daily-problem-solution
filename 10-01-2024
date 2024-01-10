@@ -1,0 +1,56 @@
+struct BidirTreeNode {
+    int val;
+    struct BidirTreeNode * root;
+    struct BidirTreeNode * left;
+    struct BidirTreeNode * right;
+    bool visited;
+};
+void
+fill_bidir(
+    struct TreeNode * orig,
+    struct BidirTreeNode * nodes,
+    struct BidirTreeNode * parent)
+{
+    if (orig == NULL) return;
+    struct BidirTreeNode * const node = nodes + orig->val;
+    node->root = parent;
+    node->visited = false;
+    node->val = orig->val;
+    if (orig->left == NULL) {
+        node->left = NULL;
+    } else {
+        node->left = nodes + orig->left->val;
+        fill_bidir(orig->left, nodes, node);
+    }
+    if (orig->right == NULL) {
+        node->right = NULL;
+    } else {
+        node->right = nodes + orig->right->val;
+        fill_bidir(orig->right, nodes, node);
+    }
+}
+
+int amountOfTime(struct TreeNode* root, int start) {
+  struct BidirTreeNode nodes[100001];
+    fill_bidir(root, nodes, NULL);
+    struct BidirTreeNode * queue[10000];
+    size_t sz = 0;
+    struct BidirTreeNode * next_queue[10000];
+    size_t next_sz;
+    queue[sz++] = nodes + start;
+    size_t steps = 0;
+    while (sz > 0) {
+        for (size_t i = 0; i < sz; ++i) {
+            queue[i]->visited = true;
+            if (queue[i]->root != NULL && !queue[i]->root->visited) { next_queue[next_sz++] = queue[i]->root; }
+            if (queue[i]->left != NULL && !queue[i]->left->visited) { next_queue[next_sz++] = queue[i]->left; }
+            if (queue[i]->right != NULL && !queue[i]->right->visited) { next_queue[next_sz++] = queue[i]->right; }
+        }
+        memcpy(queue, next_queue, next_sz * sizeof(struct BidirTreeNode *));
+        sz = next_sz;
+        next_sz = 0;
+        if (sz > 0) { steps++; }
+    }
+    return steps;
+}
+};
