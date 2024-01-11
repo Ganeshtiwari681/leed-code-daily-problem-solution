@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+ int travel(struct TreeNode*root,int max,int min,int *res)
+ {
+     res=ans;
+     if(root==NULL)
+     return 0;
+     ans = fmax(ans, fmax(abs(min - root->val), abs(max - root->val)));
+     if(root->val>max)
+     max=root->val;
+     if(root->val<min)
+     min=root->val;
+     //ans = fmax(ans, fmax(abs(min - root->val), abs(max - root->val)));
+     travel(root->left,max,min,ans);
+     travel(root->right,max,min,ans);
+     return ans;
+ }
+int maxAncestorDiff(struct TreeNode* root) {
+    int ans=0;
+    int emax=root->val;
+    int emin= root->val;
+   ans= travel(root,emax,emin,&ans);
+
+    return ans;
+}
