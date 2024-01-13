@@ -1,0 +1,27 @@
+int minSteps(char* s, char* t) {
+   int n=strlen(s);
+   int count=0,i;
+   int freqs[26],freqt[26];
+
+    for(i=0;i<26;i++)
+    {
+        freqs[i]=0;
+        freqt[i]=0;
+    }
+
+    for(i=0;i<n;i++)
+    {
+            freqs[s[i]-'a']++;
+            freqt[t[i]-'a']++;
+    }
+
+    for(i=0;i<26;i++)
+    {
+        if(freqs[i]>freqt[i])
+        {
+            count+=abs(freqs[i]-freqt[i]);
+        }
+    }
+    
+    return count;
+}
