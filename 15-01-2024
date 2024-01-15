@@ -1,0 +1,23 @@
+int** findWinners(int** matches, int matchesSize, int* matchesColSize, int* returnSize, int** returnColumnSizes) {
+    int **ret=malloc(2*sizeof(int*));
+    for(int i=0;i<2;i++)
+     ret[i]=calloc(matchesSize,sizeof(int));
+     *returnSize=2;
+     (*returnColumnSizes)=calloc(2,sizeof(int));
+
+     int win[100001]={0},lose[100001]={0};
+
+     for(int i=0;i<matchesSize;i++)
+     {
+         win[matches[i][0]]++;
+         lose[matches[i][1]]++;
+     }
+
+     for(int i=0;i<=100000;i++){
+         if(win[i]>0&&lose[i]==0)
+            ret[0][(*returnColumnSizes)[0]++]=i;
+         if(lose[i]==1)
+            ret[1][(*returnColumnSizes)[1]++]=i;
+     }
+ return ret;
+}
