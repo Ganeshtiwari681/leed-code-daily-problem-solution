@@ -1,0 +1,27 @@
+#define MAX(a, b) ((a > b) ? a : b)
+#define MIN(a, b) ((a < b) ? a : b)
+
+int longestCommonSubsequence(char* text1, char* text2) {
+    int len1 = strlen(text1);
+    int len2 = strlen(text2);
+
+    int dp[len1 + 1][len2 + 1];
+    memset(dp, 0, sizeof(dp));
+
+    for(int i = 0; i < len1; i++) {
+        char prev = *(text1 + i);
+        for(int j = 0; j < len2; j++) {
+            if(prev == *(text2 + j)) {
+                dp[i + 1][j + 1] = MIN(i + 1, dp[i][j] + 1);
+            } else {
+                dp[i + 1][j + 1] = MAX(dp[i][j + 1], dp[i + 1][j]);
+            }
+
+            if(dp[i + 1][j + 1] == len1 || dp[i + 1][j + 1] == len2) {
+                return dp[i + 1][j + 1];
+            }
+        }
+    }
+
+    return dp[len1][len2];
+}
