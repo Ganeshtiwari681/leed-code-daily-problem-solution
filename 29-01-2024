@@ -1,0 +1,59 @@
+
+#define MAX_SIZE 50
+
+typedef struct {
+    int input[MAX_SIZE];
+    int output[MAX_SIZE];
+    int inputTop;
+    int outputTop;
+} MyQueue;
+
+
+MyQueue* myQueueCreate() {
+    MyQueue* queue = (MyQueue*)malloc(sizeof(MyQueue));
+    queue->inputTop=-1;
+    queue->outputTop=-1;
+    return queue;
+
+}
+
+void myQueuePush(MyQueue* obj, int x) {
+    while(obj->outputTop!=-1)
+    {
+        obj->input[++obj->inputTop]=obj->output[obj->outputTop--];
+    }
+    obj->input[++obj->inputTop]=x;
+    while(obj->inputTop!=-1){
+        obj->output[++obj->outputTop]=obj->input[obj->inputTop--];
+    }
+}
+
+int myQueuePop(MyQueue* obj) {
+    return obj->output[obj->outputTop--];
+}
+
+int myQueuePeek(MyQueue* obj) {
+    return obj->output[obj->outputTop];
+}
+
+bool myQueueEmpty(MyQueue* obj) {
+    return obj->outputTop== -1;
+}
+
+void myQueueFree(MyQueue* obj) {
+    free(obj);
+}
+
+/**
+ * Your MyQueue struct will be instantiated and called as such:
+ * MyQueue* obj = myQueueCreate();
+ * myQueuePush(obj, x);
+ 
+ * int param_2 = myQueuePop(obj);
+ 
+ * int param_3 = myQueuePeek(obj);
+ 
+ * bool param_4 = myQueueEmpty(obj);
+ 
+ * myQueueFree(obj);
+*/
